@@ -1,0 +1,25 @@
+Public Sub CreateFromTemplate()
+        Dim myOlApp As Outlook.Application
+        Dim MyItem As Outlook.MailItem
+        Dim lCounter :x
+        Set myOlApp = CreateObject("Outlook.Application")
+
+        'Create template
+        Set MyItem = myOlApp.CreateItem(olMailItem)
+MyItem.Subject = "Intern, coffee chat?"
+MyItem.To = "Dan Wilson"
+MyItem.Body = "Hi, Name"
+'MyItem.Display
+MyItem.SaveAs "D:\coffeechat.oft", OlSaveAsType.olTemplate
+Dim cell As Range
+For Each cell In Range("A2:A3")
+Set MyItem = myOlApp.CreateItemFromTemplate("D:\coffeechat.oft")
+
+With MyItem
+.To = cell.Offset(0, 1).Value
+.Body = Replace(.Body, "Name", cell.Value)
+
+'.Send or use .Display to show the mailitem
+End With
+Next
+End Sub
